@@ -9,7 +9,7 @@ import {
   Alert,
   InputAdornment,
   IconButton,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -18,31 +18,31 @@ import LockIcon from '@mui/icons-material/Lock';
 import PersonIcon from '@mui/icons-material/Person';
 import { RegisterFormProps, RegisterFormData } from '../types';
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ 
-  onRegister, 
-  onNavigateToLogin, 
-  isLoading, 
-  error 
+const RegisterForm: React.FC<RegisterFormProps> = ({
+  onRegister,
+  onNavigateToLogin,
+  isLoading,
+  error,
 }) => {
   const [formData, setFormData] = useState<RegisterFormData>({
     name: '',
     email: '',
-    password: ''
+    password: '',
   });
   const [formErrors, setFormErrors] = useState({
     name: '',
     email: '',
-    password: ''
+    password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const theme = useTheme();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
     // Basit doğrulama
@@ -50,35 +50,43 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       setFormErrors(prev => ({
         ...prev,
-        email: value ? (emailRegex.test(value) ? '' : 'Geçerli bir email adresi giriniz') : 'Email gereklidir'
+        email: value
+          ? emailRegex.test(value)
+            ? ''
+            : 'Geçerli bir email adresi giriniz'
+          : 'Email gereklidir',
       }));
     } else if (name === 'password') {
       setFormErrors(prev => ({
         ...prev,
-        password: value ? (value.length >= 6 ? '' : 'Şifre en az 6 karakter olmalıdır') : 'Şifre gereklidir'
+        password: value
+          ? value.length >= 6
+            ? ''
+            : 'Şifre en az 6 karakter olmalıdır'
+          : 'Şifre gereklidir',
       }));
     }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     // Form doğrulama
     let hasError = false;
     const newFormErrors = { ...formErrors };
-    
+
     if (!formData.email) {
       newFormErrors.email = 'Email gereklidir';
       hasError = true;
     }
-    
+
     if (!formData.password) {
       newFormErrors.password = 'Şifre gereklidir';
       hasError = true;
     }
-    
+
     setFormErrors(newFormErrors);
-    
+
     if (!hasError && !formErrors.email && !formErrors.password) {
       onRegister(formData);
     }
@@ -95,7 +103,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           {error}
         </Alert>
       )}
-      
+
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <TextField
           margin="normal"
@@ -114,14 +122,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
               </InputAdornment>
             ),
           }}
-          sx={{ 
+          sx={{
             mb: 2,
             '& .MuiOutlinedInput-root': {
-              borderRadius: '8px'
-            }
+              borderRadius: '8px',
+            },
           }}
         />
-        
+
         <TextField
           margin="normal"
           required
@@ -142,14 +150,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
               </InputAdornment>
             ),
           }}
-          sx={{ 
+          sx={{
             mb: 2,
             '& .MuiOutlinedInput-root': {
-              borderRadius: '8px'
-            }
+              borderRadius: '8px',
+            },
           }}
         />
-        
+
         <TextField
           margin="normal"
           required
@@ -180,16 +188,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                   {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
-          sx={{ 
+          sx={{
             mb: 3,
             '& .MuiOutlinedInput-root': {
-              borderRadius: '8px'
-            }
+              borderRadius: '8px',
+            },
           }}
         />
-        
+
         <Button
           type="submit"
           fullWidth
@@ -197,20 +205,20 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           color="secondary"
           size="large"
           disabled={isLoading}
-          sx={{ 
-            mt: 1, 
+          sx={{
+            mt: 1,
             mb: 3,
             py: 1.2,
             borderRadius: '8px',
             boxShadow: '0 4px 10px rgba(245, 0, 87, 0.25)',
             '&:hover': {
               boxShadow: '0 6px 15px rgba(245, 0, 87, 0.35)',
-            }
+            },
           }}
         >
           {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Kayıt Ol'}
         </Button>
-        
+
         <Box sx={{ textAlign: 'center' }}>
           <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
             Zaten bir hesabınız var mı?
@@ -219,14 +227,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             component="button"
             variant="body2"
             onClick={onNavigateToLogin}
-            sx={{ 
+            sx={{
               cursor: 'pointer',
               color: theme.palette.primary.main,
               fontWeight: 500,
               textDecoration: 'none',
               '&:hover': {
-                textDecoration: 'underline'
-              }
+                textDecoration: 'underline',
+              },
             }}
             disabled={isLoading}
           >

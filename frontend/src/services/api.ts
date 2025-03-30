@@ -29,29 +29,29 @@ if (token) {
 export const todoApi = {
   // Tüm todoları getir (sayfalama ile)
   getAllTodos: async (
-    page = 1, 
-    limit = 10, 
-    status?: string, 
-    sortField?: string, 
+    page = 1,
+    limit = 10,
+    status?: string,
+    sortField?: string,
     sortOrder?: string
   ): Promise<PaginatedResponse<Todo>> => {
     // Query parametreleri oluştur
     const params = new URLSearchParams();
     params.append('page', page.toString());
     params.append('limit', limit.toString());
-    
+
     if (status && status !== 'all') {
       params.append('status', status);
     }
-    
+
     if (sortField) {
       params.append('sortField', sortField);
     }
-    
+
     if (sortOrder) {
       params.append('sortOrder', sortOrder);
     }
-    
+
     const response = await api.get<PaginatedResponse<Todo>>(`/todos?${params.toString()}`);
     return response.data;
   },
@@ -77,7 +77,7 @@ export const todoApi = {
   // Todo sil
   deleteTodo: async (id: string): Promise<void> => {
     await api.delete(`/todos/${id}`);
-  }
+  },
 };
 
 // Auth API servisleri
@@ -98,7 +98,7 @@ export const authApi = {
   getProfile: async () => {
     const response = await api.get('/auth/profile');
     return response.data;
-  }
+  },
 };
 
 export default api;

@@ -32,18 +32,18 @@ export interface TodoListProps {
 export enum TodoFilter {
   ALL = 'all',
   ACTIVE = 'active',
-  COMPLETED = 'completed'
+  COMPLETED = 'completed',
 }
 
 export enum TodoSortField {
   CREATED_AT = 'createdAt',
-  UPDATED_AT = 'updatedAt', 
-  TITLE = 'title'
+  UPDATED_AT = 'updatedAt',
+  TITLE = 'title',
 }
 
 export enum SortDirection {
   ASC = 'asc',
-  DESC = 'desc'
+  DESC = 'desc',
 }
 
 export interface TodoSortOption {

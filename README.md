@@ -2,7 +2,7 @@
 
 A comprehensive and feature-rich Todo List application built with modern web technologies. This application allows users to register, login, and manage their todos with filtering, sorting, and responsive design capabilities.
 
-![Todo App Screenshot](screenshots/todo-app.png)
+![Todo App Screenshot](screenshots/todo-app-screenshot.png)
 
 ## Features
 
@@ -34,6 +34,40 @@ A comprehensive and feature-rich Todo List application built with modern web tec
   - API route protection
   - Form validation
 
+- **Testing**
+  - Unit tests for backend APIs
+  - Unit tests for frontend components
+  - Mocking and test coverage
+
+## Code Quality
+
+This project uses ESLint and Prettier to ensure code quality and consistency.
+
+### Linting and Formatting
+
+```bash
+# Backend
+cd backend
+npx eslint .        # Check for linting issues
+npx eslint . --fix  # Fix linting issues
+npx prettier --write "src/**/*.ts"  # Format code with Prettier
+
+# Frontend
+cd frontend
+npm run lint
+npm run lint:fix
+npm run format
+```
+
+- **API Documentation**
+  - OpenAPI/Swagger documentation
+  - Interactive API explorer
+
+- **Containerization**
+  - Dockerized application
+  - Docker Compose for easy deployment
+  - Multi-stage builds for optimized images
+
 ## Technology Stack
 
 ### Frontend
@@ -43,6 +77,7 @@ A comprehensive and feature-rich Todo List application built with modern web tec
 - TanStack Query (React Query)
 - React Router
 - Axios
+- React Testing Library & Jest
 
 ### Backend
 - Express.js
@@ -52,6 +87,13 @@ A comprehensive and feature-rich Todo List application built with modern web tec
 - JWT Authentication
 - REST API
 - ESM Modules
+- Jest & Supertest for testing
+- Swagger/OpenAPI
+
+### DevOps
+- Docker & Docker Compose
+- Multi-stage build optimization
+- Nginx for frontend serving
 
 ## Installation and Setup
 
@@ -59,8 +101,29 @@ A comprehensive and feature-rich Todo List application built with modern web tec
 
 - Node.js (v14 or higher)
 - PostgreSQL database
+- Docker & Docker Compose (optional)
 
-### Backend
+### Using Docker (Recommended)
+
+The easiest way to run the application is using Docker Compose:
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd todo-app
+
+# Start the application with Docker Compose
+docker-compose up -d
+```
+
+The application will be running at:
+- Frontend: http://localhost
+- Backend API: http://localhost:3001/api
+- API Documentation: http://localhost:3001/api-docs
+
+### Manual Setup
+
+#### Backend
 
 ```bash
 # Navigate to backend directory
@@ -81,7 +144,7 @@ npx prisma migrate dev
 npm run dev
 ```
 
-### Frontend
+#### Frontend
 
 ```bash
 # Navigate to frontend directory
@@ -112,11 +175,27 @@ The application will be running at:
 - `PUT /api/todos/:id` - Update a todo
 - `DELETE /api/todos/:id` - Delete a todo
 
-## Future Enhancements
+## Running Tests
 
-- Add pagination for large todo lists
-- Add categories/tags for todos
-- Implement dark/light theme toggle
+### Backend Tests
+
+```bash
+cd backend
+npm test
+```
+
+### Frontend Tests
+
+```bash
+cd frontend
+npm test
+```
+
+## API Documentation
+
+API documentation is available at `http://localhost:3001/api-docs` when the server is running. This interactive documentation allows you to explore and test all API endpoints.
+
+## Future Enhancements
 - Add drag and drop for reordering todos
 - Mobile app with React Native
 

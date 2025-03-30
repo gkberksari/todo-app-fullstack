@@ -12,7 +12,7 @@ declare global {
       toHaveTextContent(text: string | RegExp): R;
     }
   }
-  
+
   // Add test and expect to global namespace
   const test: any;
   const expect: any;

@@ -58,11 +58,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const { password: _, ...userWithoutPassword } = newUser;
 
     // JWT token oluştur
-    const token = jwt.sign(
-      { userId: newUser.id, email: newUser.email } as JwtPayload,
-      JWT_SECRET,
-      { expiresIn: '24h' }
-    );
+    const token = jwt.sign({ userId: newUser.id, email: newUser.email } as JwtPayload, JWT_SECRET, {
+      expiresIn: '24h',
+    });
 
     // Kullanıcı ve token bilgisini gönder
     const response: AuthResponse = {
@@ -110,11 +108,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     const { password: _, ...userWithoutPassword } = user;
 
     // JWT token oluştur
-    const token = jwt.sign(
-      { userId: user.id, email: user.email } as JwtPayload,
-      JWT_SECRET,
-      { expiresIn: '24h' }
-    );
+    const token = jwt.sign({ userId: user.id, email: user.email } as JwtPayload, JWT_SECRET, {
+      expiresIn: '24h',
+    });
 
     // Kullanıcı ve token bilgisini gönder
     const response: AuthResponse = {

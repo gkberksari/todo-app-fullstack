@@ -23,7 +23,7 @@ export const getAllTodos = async (req: Request, res: Response): Promise<void> =>
     // Filtreleme parametreleri
     const { status } = req.query;
     const where: any = { userId };
-    
+
     if (status === 'active') {
       where.completed = false;
     } else if (status === 'completed') {
@@ -44,7 +44,7 @@ export const getAllTodos = async (req: Request, res: Response): Promise<void> =>
         skip,
         take: limit,
       }),
-      prisma.todo.count({ where })
+      prisma.todo.count({ where }),
     ]);
 
     // Sayfalama meta verisi
@@ -60,8 +60,8 @@ export const getAllTodos = async (req: Request, res: Response): Promise<void> =>
         totalCount,
         totalPages,
         hasNextPage,
-        hasPrevPage
-      }
+        hasPrevPage,
+      },
     });
   } catch (error) {
     console.error('Error fetching todos:', error);
@@ -84,7 +84,7 @@ export const getTodoById = async (req: Request, res: Response): Promise<void> =>
     const todo = await prisma.todo.findUnique({
       where: { id: String(id) },
     });
-    
+
     if (!todo) {
       res.status(404).json({ error: 'Todo bulunamadı' });
       return;
@@ -92,10 +92,10 @@ export const getTodoById = async (req: Request, res: Response): Promise<void> =>
 
     // Todo bu kullanıcıya ait mi kontrol et
     if (todo.userId !== userId) {
-      res.status(403).json({ error: 'Bu todo\'ya erişim izniniz yok' });
+      res.status(403).json({ error: "Bu todo'ya erişim izniniz yok" });
       return;
     }
-    
+
     res.json(todo);
   } catch (error) {
     console.error('Error fetching todo:', error);
@@ -113,20 +113,20 @@ export const createTodo = async (req: Request, res: Response): Promise<void> => 
       res.status(401).json({ error: 'Yetkilendirme başarısız' });
       return;
     }
-    
+
     if (!title) {
       res.status(400).json({ error: 'Başlık gereklidir' });
       return;
     }
-    
+
     const newTodo = await prisma.todo.create({
       data: {
         title,
         description,
-        userId // Kullanıcı ID'sini ekle
+        userId, // Kullanıcı ID'sini ekle
       },
     });
-    
+
     res.status(201).json(newTodo);
   } catch (error) {
     console.error('Error creating todo:', error);
@@ -145,7 +145,7 @@ export const updateTodo = async (req: Request, res: Response): Promise<void> => 
       res.status(401).json({ error: 'Yetkilendirme başarısız' });
       return;
     }
-    
+
     if (!title) {
       res.status(400).json({ error: 'Başlık gereklidir' });
       return;
@@ -163,10 +163,10 @@ export const updateTodo = async (req: Request, res: Response): Promise<void> => 
 
     // Todo bu kullanıcıya ait mi kontrol et
     if (existingTodo.userId !== userId) {
-      res.status(403).json({ error: 'Bu todo\'yu güncelleme izniniz yok' });
+      res.status(403).json({ error: "Bu todo'yu güncelleme izniniz yok" });
       return;
     }
-    
+
     // id'yi string olarak kullanıyoruz (CUID)
     const updatedTodo = await prisma.todo.update({
       where: { id: String(id) },
@@ -176,7 +176,7 @@ export const updateTodo = async (req: Request, res: Response): Promise<void> => 
         completed: completed !== undefined ? completed : undefined,
       },
     });
-    
+
     res.json(updatedTodo);
   } catch (error) {
     console.error('Error updating todo:', error);
@@ -207,15 +207,15 @@ export const deleteTodo = async (req: Request, res: Response): Promise<void> => 
 
     // Todo bu kullanıcıya ait mi kontrol et
     if (existingTodo.userId !== userId) {
-      res.status(403).json({ error: 'Bu todo\'yu silme izniniz yok' });
+      res.status(403).json({ error: "Bu todo'yu silme izniniz yok" });
       return;
     }
-    
+
     // id'yi string olarak kullanıyoruz (CUID)
     await prisma.todo.delete({
       where: { id: String(id) },
     });
-    
+
     res.status(204).send();
   } catch (error) {
     console.error('Error deleting todo:', error);

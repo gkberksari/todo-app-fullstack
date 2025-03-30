@@ -16,7 +16,7 @@ import {
   ListItemText,
   Divider,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -33,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
-  
+
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = (open: boolean) => {
@@ -48,11 +48,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   // Kullanıcı adından avatar oluştur
   const getInitials = () => {
     if (!user?.name && !user?.email) return '?';
-    
+
     if (user.name) {
-      return user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+      return user.name
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase();
     }
-    
+
     return user.email.charAt(0).toUpperCase();
   };
 
@@ -60,12 +64,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <Box sx={{ width: 250 }} role="presentation">
       <Box sx={{ p: 2, bgcolor: theme.palette.primary.main, color: 'white' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-          <Avatar sx={{ mr: 2, bgcolor: theme.palette.secondary.main }}>
-            {getInitials()}
-          </Avatar>
-          <Typography variant="subtitle1">
-            {user?.name || user?.email}
-          </Typography>
+          <Avatar sx={{ mr: 2, bgcolor: theme.palette.secondary.main }}>{getInitials()}</Avatar>
+          <Typography variant="subtitle1">{user?.name || user?.email}</Typography>
         </Box>
       </Box>
       <Divider />
@@ -104,26 +104,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <MenuIcon />
             </IconButton>
           )}
-          
-          <Typography 
-            variant="h6" 
-            component="div" 
-            sx={{ 
+
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
               flexGrow: 1,
-              fontSize: { xs: '1.1rem', sm: '1.3rem' }
+              fontSize: { xs: '1.1rem', sm: '1.3rem' },
             }}
           >
             Todo Uygulaması
           </Typography>
-          
+
           {isAuthenticated && !isMobile && (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <Avatar 
-                sx={{ 
+              <Avatar
+                sx={{
                   bgcolor: theme.palette.secondary.main,
                   width: 35,
                   height: 35,
-                  mr: 1
+                  mr: 1,
                 }}
               >
                 {getInitials()}
@@ -131,8 +131,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <Typography variant="body2" sx={{ mr: 2 }}>
                 {user?.email}
               </Typography>
-              <Button 
-                color="inherit" 
+              <Button
+                color="inherit"
                 onClick={handleLogout}
                 startIcon={<LogoutIcon />}
                 sx={{ ml: 1 }}
@@ -145,36 +145,32 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </AppBar>
 
       {/* Mobil görünüm için yan menü */}
-      <Drawer
-        anchor="left"
-        open={drawerOpen}
-        onClose={() => toggleDrawer(false)}
-      >
+      <Drawer anchor="left" open={drawerOpen} onClose={() => toggleDrawer(false)}>
         {drawer}
       </Drawer>
 
       {/* Ana içerik */}
-      <Container 
-        sx={{ 
-          mt: { xs: 2, sm: 4 }, 
-          mb: 4, 
+      <Container
+        sx={{
+          mt: { xs: 2, sm: 4 },
+          mb: 4,
           flexGrow: 1,
           width: '100%',
-          maxWidth: { xs: '100%', sm: '100%', md: '900px' }
+          maxWidth: { xs: '100%', sm: '100%', md: '900px' },
         }}
       >
         {children}
       </Container>
 
       {/* Footer */}
-      <Box 
-        component="footer" 
-        sx={{ 
-          py: 3, 
-          px: 2, 
-          mt: 'auto', 
+      <Box
+        component="footer"
+        sx={{
+          py: 3,
+          px: 2,
+          mt: 'auto',
           bgcolor: '#f5f5f5',
-          borderTop: '1px solid #e0e0e0'
+          borderTop: '1px solid #e0e0e0',
         }}
       >
         <Container maxWidth="md">

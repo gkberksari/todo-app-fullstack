@@ -30,12 +30,22 @@ const App: React.FC = () => {
           <Router>
             <Layout>
               <Routes>
-                <Route path="/login" element={<PublicRoute><AuthPage /></PublicRoute>} />
-                <Route path="/" element={
-                  <PrivateRoute>
-                    <TodoApp />
-                  </PrivateRoute>
-                } />
+                <Route
+                  path="/login"
+                  element={
+                    <PublicRoute>
+                      <AuthPage />
+                    </PublicRoute>
+                  }
+                />
+                <Route
+                  path="/"
+                  element={
+                    <PrivateRoute>
+                      <TodoApp />
+                    </PrivateRoute>
+                  }
+                />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Layout>

@@ -10,17 +10,17 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
   const token = authHeader && authHeader.split(' ')[1]; // "Bearer TOKEN" formatı
 
   if (!token) {
-    res.status(401).json({ error: 'Yetkilendirme token\'ı gerekli' });
+    res.status(401).json({ error: "Yetkilendirme token'ı gerekli" });
     return;
   }
 
   try {
     // Token'ı doğrula
     const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
-    
+
     // İsteğe kullanıcı bilgisini ekle
     req.user = decoded;
-    
+
     next();
   } catch (error) {
     console.error('Error authenticating token:', error);

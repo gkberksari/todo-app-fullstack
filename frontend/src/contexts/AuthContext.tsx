@@ -39,17 +39,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Login mutation
   const loginMutation = useMutation({
-    mutationFn: (data: LoginFormData) => 
-      authApi.login(data.email, data.password),
+    mutationFn: (data: LoginFormData) => authApi.login(data.email, data.password),
     onSuccess: (data: AuthResponse) => {
       const { token, user } = data;
-      
+
       // Token ayarla
       setAuthToken(token);
-      
+
       // Kullanıcı bilgisini localStorage'a kaydet
       localStorage.setItem('user', JSON.stringify(user));
-      
+
       setState({
         token,
         user,
@@ -61,32 +60,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     onError: (error: any) => {
       console.error('Login error:', error);
       let errorMessage = 'Giriş sırasında bir hata oluştu';
-      
+
       if (error.response) {
         errorMessage = error.response.data?.error || errorMessage;
       }
-      
+
       setState({
         ...state,
         isLoading: false,
         error: errorMessage,
       });
-    }
+    },
   });
 
   // Register mutation
   const registerMutation = useMutation({
-    mutationFn: (data: RegisterFormData) => 
-      authApi.register(data.name, data.email, data.password),
+    mutationFn: (data: RegisterFormData) => authApi.register(data.name, data.email, data.password),
     onSuccess: (data: AuthResponse) => {
       const { token, user } = data;
-      
+
       // Token ayarla
       setAuthToken(token);
-      
+
       // Kullanıcı bilgisini localStorage'a kaydet
       localStorage.setItem('user', JSON.stringify(user));
-      
+
       setState({
         token,
         user,
@@ -98,17 +96,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     onError: (error: any) => {
       console.error('Register error:', error);
       let errorMessage = 'Kayıt sırasında bir hata oluştu';
-      
+
       if (error.response) {
         errorMessage = error.response.data?.error || errorMessage;
       }
-      
+
       setState({
         ...state,
         isLoading: false,
         error: errorMessage,
       });
-    }
+    },
   });
 
   // Sayfa yüklendiğinde localStorage'dan token ve user bilgisini al
@@ -116,14 +114,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const loadUserFromStorage = () => {
       const token = localStorage.getItem('token');
       const userStr = localStorage.getItem('user');
-      
+
       if (token && userStr) {
         try {
           const user = JSON.parse(userStr) as User;
-          
+
           // Token ayarla
           setAuthToken(token);
-          
+
           setState({
             token,
             user,
@@ -188,9 +186,5 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     logout,
   };
 
-  return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
