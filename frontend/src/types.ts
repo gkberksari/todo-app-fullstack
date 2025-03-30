@@ -107,3 +107,24 @@ export interface RegisterFormProps {
   isLoading: boolean;
   error: string | null;
 }
+
+// Pagination types
+export interface PaginationMeta {
+  page: number;
+  limit: number;
+  totalCount: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  meta: PaginationMeta;
+}
+
+export interface PaginationProps {
+  meta: PaginationMeta;
+  onPageChange: (page: number) => void;
+  onLimitChange: (limit: number) => void;
+}

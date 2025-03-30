@@ -5,9 +5,7 @@ import {
   Button,
   Box,
   Typography,
-  Grid,
   IconButton,
-  Collapse,
   useTheme,
   useMediaQuery
 } from '@mui/material';
@@ -170,70 +168,66 @@ const TodoForm: React.FC<TodoFormProps> = ({
           </Box>
           
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Başlık"
-                  variant="outlined"
-                  value={title}
-                  onChange={(e) => {
-                    setTitle(e.target.value);
-                    if (e.target.value.trim()) {
-                      setTitleError('');
-                    }
-                  }}
-                  error={!!titleError}
-                  helperText={titleError}
-                  size={isMobile ? "small" : "medium"}
-                  sx={{ 
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '8px'
-                    }
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Açıklama (opsiyonel)"
-                  variant="outlined"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  multiline
-                  rows={isMobile ? 3 : 4}
-                  size={isMobile ? "small" : "medium"}
-                  sx={{ 
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '8px'
-                    }
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-                  {editingTodo && (
-                    <Button 
-                      variant="outlined" 
-                      color="inherit"
-                      onClick={cancelEdit}
-                      sx={{ borderRadius: '8px' }}
-                    >
-                      İptal
-                    </Button>
-                  )}
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <TextField
+                fullWidth
+                label="Başlık"
+                variant="outlined"
+                value={title}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  if (e.target.value.trim()) {
+                    setTitleError('');
+                  }
+                }}
+                error={!!titleError}
+                helperText={titleError}
+                size={isMobile ? "small" : "medium"}
+                sx={{ 
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
+              />
+              
+              <TextField
+                fullWidth
+                label="Açıklama (opsiyonel)"
+                variant="outlined"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                multiline
+                rows={isMobile ? 3 : 4}
+                size={isMobile ? "small" : "medium"}
+                sx={{ 
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: '8px'
+                  }
+                }}
+              />
+              
+              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+                {editingTodo && (
                   <Button 
-                    type="submit" 
-                    variant="contained" 
-                    color={editingTodo ? "primary" : "secondary"}
-                    startIcon={editingTodo ? <EditIcon /> : <AddIcon />}
+                    variant="outlined" 
+                    color="inherit"
+                    onClick={cancelEdit}
                     sx={{ borderRadius: '8px' }}
                   >
-                    {editingTodo ? 'Güncelle' : 'Ekle'}
+                    İptal
                   </Button>
-                </Box>
-              </Grid>
-            </Grid>
+                )}
+                <Button 
+                  type="submit" 
+                  variant="contained" 
+                  color={editingTodo ? "primary" : "secondary"}
+                  startIcon={editingTodo ? <EditIcon /> : <AddIcon />}
+                  sx={{ borderRadius: '8px' }}
+                >
+                  {editingTodo ? 'Güncelle' : 'Ekle'}
+                </Button>
+              </Box>
+            </Box>
           </form>
         </>
       )}

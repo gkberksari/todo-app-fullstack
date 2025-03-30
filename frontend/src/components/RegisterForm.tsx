@@ -11,13 +11,11 @@ import {
   IconButton,
   useTheme
 } from '@mui/material';
-import {
-  Visibility,
-  VisibilityOff,
-  Email as EmailIcon,
-  Lock as LockIcon,
-  Person as PersonIcon
-} from '@mui/icons-material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import EmailIcon from '@mui/icons-material/Email';
+import LockIcon from '@mui/icons-material/Lock';
+import PersonIcon from '@mui/icons-material/Person';
 import { RegisterFormProps, RegisterFormData } from '../types';
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ 
@@ -179,7 +177,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
                   onClick={toggleShowPassword}
                   edge="end"
                 >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                 </IconButton>
               </InputAdornment>
             )

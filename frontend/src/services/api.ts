@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Todo, TodoFormData } from '../types';
+import { Todo, TodoFormData, PaginatedResponse } from '../types';
 
 const API_URL = 'http://localhost:3001/api';
 
@@ -27,9 +27,32 @@ if (token) {
 
 // Todo API servisleri
 export const todoApi = {
-  // Tüm todoları getir
-  getAllTodos: async (): Promise<Todo[]> => {
-    const response = await api.get<Todo[]>('/todos');
+  // Tüm todoları getir (sayfalama ile)
+  getAllTodos: async (
+    page = 1, 
+    limit = 10, 
+    status?: string, 
+    sortField?: string, 
+    sortOrder?: string
+  ): Promise<PaginatedResponse<Todo>> => {
+    // Query parametreleri oluştur
+    const params = new URLSearchParams();
+    params.append('page', page.toString());
+    params.append('limit', limit.toString());
+    
+    if (status && status !== 'all') {
+      params.append('status', status);
+    }
+    
+    if (sortField) {
+      params.append('sortField', sortField);
+    }
+    
+    if (sortOrder) {
+      params.append('sortOrder', sortOrder);
+    }
+    
+    const response = await api.get<PaginatedResponse<Todo>>(`/todos?${params.toString()}`);
     return response.data;
   },
 

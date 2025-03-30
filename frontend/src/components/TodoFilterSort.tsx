@@ -11,17 +11,16 @@ import {
   Chip,
   useTheme,
   useMediaQuery,
-  Grid,
   Divider,
-  Paper
+  Paper,
+  SelectChangeEvent
 } from '@mui/material';
-import {
-  FilterList as FilterIcon,
-  Sort as SortIcon,
-  CheckCircle as CheckCircleIcon,
-  Radio as RadioIcon,
-  List as ListIcon
-} from '@mui/icons-material';
+import FilterIcon from '@mui/icons-material/Filter';
+import SortIcon from '@mui/icons-material/Sort';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import RadioIcon from '@mui/icons-material/Radio';
+import ListIcon from '@mui/icons-material/List';
+
 import { 
   TodoFilter, 
   TodoSortField, 
@@ -51,12 +50,12 @@ const TodoFilterSort: React.FC<TodoFilterSortProps> = ({
     }
   };
 
-  const handleSortFieldChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSortFieldChange = (event: SelectChangeEvent) => {
     const field = event.target.value as TodoSortField;
     setSortOption({ ...sortOption, field });
   };
 
-  const handleSortDirectionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleSortDirectionChange = (event: SelectChangeEvent) => {
     const direction = event.target.value as SortDirection;
     setSortOption({ ...sortOption, direction });
   };
@@ -70,59 +69,35 @@ const TodoFilterSort: React.FC<TodoFilterSortProps> = ({
         borderRadius: theme.shape.borderRadius
       }}
     >
-      <Grid container spacing={2} alignItems="center">
-        {/* Filtre ve Sıralama Başlığı */}
-        <Grid item xs={12}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-            <Typography 
-              variant="subtitle1" 
-              component="div" 
-              sx={{ 
-                fontWeight: 500,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1
-              }}
-            >
-              <FilterIcon fontSize="small" color="action" /> 
-              Filtrele ve Sırala
-            </Typography>
-            
-            {/* Todo sayaçları */}
-            <Box sx={{ display: 'flex', gap: 1 }}>
+      {/* Header with title and counts */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+        <Typography 
+          variant="subtitle1" 
+          component="div" 
+          sx={{ 
+            fontWeight: 500,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1
+          }}
+        >
+          <FilterIcon fontSize="small" color="action" /> 
+          Filtrele ve Sırala
+        </Typography>
+        
+        {/* Todo counts */}
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Chip 
+            size="small" 
+            label={`Toplam: ${totalCount}`} 
+            icon={<ListIcon fontSize="small" />}
+            sx={{ bgcolor: theme.palette.primary.main, color: 'white' }}
+          />
+          {!isMobile && (
+            <>
               <Chip 
                 size="small" 
-                label={`Toplam: ${totalCount}`} 
-                icon={<ListIcon fontSize="small" />}
-                sx={{ bgcolor: theme.palette.primary.main, color: 'white' }}
-              />
-              {!isMobile && (
-                <>
-                  <Chip 
-                    size="small" 
-                    label={`Devam Eden: ${activeCount}`} 
-                    icon={<RadioIcon fontSize="small" />}
-                    sx={{ bgcolor: '#42a5f5', color: 'white' }}
-                  />
-                  <Chip 
-                    size="small" 
-                    label={`Tamamlanan: ${completedCount}`} 
-                    icon={<CheckCircleIcon fontSize="small" />}
-                    sx={{ bgcolor: theme.palette.success.main, color: 'white' }}
-                  />
-                </>
-              )}
-            </Box>
-          </Box>
-        </Grid>
-
-        {/* Mobil görünümde todo sayaçları */}
-        {isMobile && (
-          <Grid item xs={12}>
-            <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
-              <Chip 
-                size="small" 
-                label={`Devam Eden: ${activeCount}`} 
+                label={`Devam Eden (bu sayfa): ${activeCount}`} 
                 icon={<RadioIcon fontSize="small" />}
                 sx={{ bgcolor: '#42a5f5', color: 'white' }}
               />
@@ -132,16 +107,39 @@ const TodoFilterSort: React.FC<TodoFilterSortProps> = ({
                 icon={<CheckCircleIcon fontSize="small" />}
                 sx={{ bgcolor: theme.palette.success.main, color: 'white' }}
               />
-            </Box>
-          </Grid>
-        )}
+            </>
+          )}
+        </Box>
+      </Box>
 
-        <Grid item xs={12}>
-          <Divider />
-        </Grid>
+      {/* Mobile counts */}
+      {isMobile && (
+        <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
+          <Chip 
+            size="small" 
+            label={`Devam Eden: ${activeCount}`} 
+            icon={<RadioIcon fontSize="small" />}
+            sx={{ bgcolor: '#42a5f5', color: 'white' }}
+          />
+          <Chip 
+            size="small" 
+            label={`Tamamlanan: ${completedCount}`} 
+            icon={<CheckCircleIcon fontSize="small" />}
+            sx={{ bgcolor: theme.palette.success.main, color: 'white' }}
+          />
+        </Box>
+      )}
 
-        {/* Filtre Butonları */}
-        <Grid item xs={12} sm={6}>
+      <Divider sx={{ my: 2 }} />
+
+      {/* Filter and sort section */}
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: isMobile ? 'column' : 'row',
+        gap: 2
+      }}>
+        {/* Filter buttons */}
+        <Box sx={{ flex: 1 }}>
           <Typography 
             variant="body2" 
             component="div" 
@@ -213,10 +211,10 @@ const TodoFilterSort: React.FC<TodoFilterSortProps> = ({
               {!isMobile && "Tamamlanan"}
             </ToggleButton>
           </ToggleButtonGroup>
-        </Grid>
+        </Box>
 
-        {/* Sıralama Seçenekleri */}
-        <Grid item xs={12} sm={6}>
+        {/* Sort options */}
+        <Box sx={{ flex: 1 }}>
           <Typography 
             variant="body2" 
             component="div" 
@@ -255,8 +253,8 @@ const TodoFilterSort: React.FC<TodoFilterSortProps> = ({
               </Select>
             </FormControl>
           </Box>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Paper>
   );
 };

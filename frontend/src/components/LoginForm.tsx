@@ -11,12 +11,10 @@ import {
   IconButton,
   useTheme
 } from '@mui/material';
-import {
-  Visibility,
-  VisibilityOff,
-  Email as EmailIcon,
-  Lock as LockIcon
-} from '@mui/icons-material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import EmailIcon from '@mui/icons-material/Email';
+import LockIcon from '@mui/icons-material/Lock';
 import { LoginFormProps, LoginFormData } from '../types';
 
 const LoginForm: React.FC<LoginFormProps> = ({ 
@@ -152,7 +150,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
                   onClick={toggleShowPassword}
                   edge="end"
                 >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                 </IconButton>
               </InputAdornment>
             )

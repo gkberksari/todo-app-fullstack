@@ -11,18 +11,16 @@ import {
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Divider,
   useMediaQuery,
   useTheme
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  Dashboard as DashboardIcon,
-  ExitToApp as LogoutIcon,
-  Person as PersonIcon
-} from '@mui/icons-material';
+import MenuIcon from '@mui/icons-material/Menu';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -72,17 +70,21 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </Box>
       <Divider />
       <List>
-        <ListItem button onClick={() => navigate('/')}>
-          <ListItemIcon>
-            <DashboardIcon />
-          </ListItemIcon>
-          <ListItemText primary="Todo Listesi" />
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => navigate('/')}>
+            <ListItemIcon>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Todo Listesi" />
+          </ListItemButton>
         </ListItem>
-        <ListItem button onClick={handleLogout}>
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText primary="Çıkış Yap" />
+        <ListItem disablePadding>
+          <ListItemButton onClick={handleLogout}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Çıkış Yap" />
+          </ListItemButton>
         </ListItem>
       </List>
     </Box>
