@@ -4,7 +4,7 @@ import { TodoInput, TodoUpdateInput } from '../types/index.js';
 
 const prisma = new PrismaClient();
 
-// Tüm todo'ları getir (kullanıcıya özgü)
+// Tüm todo'ları getir (kullanıcıya özgü ve sayfalama ile)
 export const getAllTodos = async (req: Request, res: Response): Promise<void> => {
   try {
     // Middleware'den gelen kullanıcı bilgisi
@@ -15,15 +15,54 @@ export const getAllTodos = async (req: Request, res: Response): Promise<void> =>
       return;
     }
 
-    const todos = await prisma.todo.findMany({
-      where: {
-        userId: userId
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
+    // Sayfalama parametreleri
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+
+    // Filtreleme parametreleri
+    const { status } = req.query;
+    const where: any = { userId };
+    
+    if (status === 'active') {
+      where.completed = false;
+    } else if (status === 'completed') {
+      where.completed = true;
+    }
+
+    // Sıralama parametreleri
+    const sortField = (req.query.sortField as string) || 'createdAt';
+    const sortOrder = (req.query.sortOrder as string) || 'desc';
+    const orderBy: any = {};
+    orderBy[sortField] = sortOrder;
+
+    // Todo'ları getir (sayfalama ve filtreleme ile)
+    const [todos, totalCount] = await Promise.all([
+      prisma.todo.findMany({
+        where,
+        orderBy,
+        skip,
+        take: limit,
+      }),
+      prisma.todo.count({ where })
+    ]);
+
+    // Sayfalama meta verisi
+    const totalPages = Math.ceil(totalCount / limit);
+    const hasNextPage = page < totalPages;
+    const hasPrevPage = page > 1;
+
+    res.json({
+      data: todos,
+      meta: {
+        page,
+        limit,
+        totalCount,
+        totalPages,
+        hasNextPage,
+        hasPrevPage
+      }
     });
-    res.json(todos);
   } catch (error) {
     console.error('Error fetching todos:', error);
     res.status(500).json({ error: 'Todos getirilirken bir hata oluştu' });
@@ -79,7 +118,7 @@ export const createTodo = async (req: Request, res: Response): Promise<void> => 
       res.status(400).json({ error: 'Başlık gereklidir' });
       return;
     }
-
+    
     const newTodo = await prisma.todo.create({
       data: {
         title,
@@ -87,7 +126,7 @@ export const createTodo = async (req: Request, res: Response): Promise<void> => 
         userId // Kullanıcı ID'sini ekle
       },
     });
-
+    
     res.status(201).json(newTodo);
   } catch (error) {
     console.error('Error creating todo:', error);
