@@ -66,7 +66,7 @@ const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
-    return null; // veya loading indicator
+    return null;
   }
 
   if (isAuthenticated) {

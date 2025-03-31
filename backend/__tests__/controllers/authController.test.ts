@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { register, login, getProfile } from '../../src/controllers/authController';
+import '@types/jest';
 
 // Mock dependencies
 jest.mock('@prisma/client', () => {
@@ -41,7 +39,7 @@ jest.mock('@prisma/client', () => {
 
 jest.mock('bcrypt', () => ({
   hash: jest.fn().mockResolvedValue('hashedPassword'),
-  compare: jest.fn().mockImplementation((password, hash) => {
+  compare: jest.fn().mockImplementation(password => {
     return Promise.resolve(password === 'correct-password');
   }),
 }));

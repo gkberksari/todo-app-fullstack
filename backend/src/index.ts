@@ -22,7 +22,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use('/api/auth', authRoutes);
 app.use('/api/todos', todoRoutes);
 
-// Error Handling Middleware - en sonda olmalı
+// Error Handling Middleware
 app.use(errorHandler);
 
 app.listen(PORT, () => {
